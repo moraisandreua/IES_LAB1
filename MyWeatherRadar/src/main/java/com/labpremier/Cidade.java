@@ -1,5 +1,8 @@
 package com.labpremier;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class Cidade {
     @SerializedName("globalIdLocal")
     @Expose
@@ -12,14 +15,14 @@ public class Cidade {
     public Integer getGlobalIdLocal(){
         return this.globalIdLocal;
     }
-    public Integer getCityName(){
+    public String getCityName(){
         return this.cityName;
     }
 
     public void setGlobalIdLocal(Integer globalIdLocal){
         this.globalIdLocal=globalIdLocal;
     }
-    public void setCityName(Integer cityName){
+    public void setCityName(String cityName){
         this.cityName=cityName;
     }
 }

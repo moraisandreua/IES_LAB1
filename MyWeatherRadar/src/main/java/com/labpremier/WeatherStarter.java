@@ -18,12 +18,17 @@ public class WeatherStarter {
     protected static final Logger logger = LogManager.getLogger(WeatherStarter.class.getName());
     
     public static void  main(String[] args ) {
-        int cityId=1010500;
-        /*
-        set cityId based on received parameter
+        /* set cityId based on received parameter (lab 1.1)
+            *int cityId=1010500;
+            *if(args.length != 0)
+                *cityId=Integer.parseInt(args[0]);
         */
+
+        /* set cityName based on received parameter (lab 1.2) */
+        String cityName="Aveiro"; // Default cityName
+        Integer cityId=1010500; // Default cityId
         if(args.length != 0)
-            cityId=Integer.parseInt(args[0]);
+            cityName=args[0];
 
         /*
         get a retrofit instance, loaded with the GSon lib to convert JSON into objects
@@ -32,49 +37,51 @@ public class WeatherStarter {
                 .baseUrl("http://api.ipma.pt/open-data/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-
+        
         IpmaService service = retrofit.create(IpmaService.class);
-        Call<IpmaCityForecast> callSync = service.getForecastForACity(cityId);
+
+        // get cityId searching by name
+        Call<IpmaCities> callSync_Cities = service.getAllCities();
+        try{
+            Response<IpmaCities> apiResponse = callSync_Cities.execute();
+            IpmaCities cidades = apiResponse.body();
+            for(Cidade c : cidades.getCities()) {
+                String currentName = c.getCityName().toLowerCase();
+                if(cityName.toLowerCase().equals(currentName)){
+                    cityId=c.getGlobalIdLocal();
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        
+        Call<IpmaCityForecast> callSync_Forecast = service.getForecastForACity(cityId);
 
         System.out.format("******************\n\nCity's Information\n\n******************\n");
 
         try {
-            Response<IpmaCityForecast> apiResponse = callSync.execute();
+            logger.info(cityId + ": " + cityName);
+            Response<IpmaCityForecast> apiResponse = callSync_Forecast.execute();
             IpmaCityForecast forecast = apiResponse.body();
 
             if (forecast != null) {
-                logger.info("max temp for today: " + forecast.getData().
-                    listIterator().next().getTMax());
-
-                logger.info("min temp for today: " + forecast.getData().
-                    listIterator().next().getTMin());
-                
-                logger.info("wind direction: " + forecast.getData().
-                    listIterator().next().getPredWindDir());
-                    
-                logger.info("weather type: " + forecast.getData().
-                    listIterator().next().getIdWeatherType());
-                    
-                logger.info("classified wind speed: " + forecast.getData().
-                    listIterator().next().getClassWindSpeed());
-                    
-                logger.info("longitude: " + forecast.getData().
-                    listIterator().next().getLongitude());
-                    
-                logger.info("latitude: " + forecast.getData().
-                    listIterator().next().getLatitude());
-                    
-                logger.info("forecast date: " + forecast.getData().
-                    listIterator().next().getForecastDate());
-                    
-                logger.info("precipitation probability: " + forecast.getData().
-                    listIterator().next().getPrecipitaProb());
+                for(CityForecast c : forecast.getData()){
+                    System.out.println("***"+c.getForecastDate()+"***");
+                    logger.info("max temp for today: " + c.getTMax());
+                    logger.info("min temp for today: " + c.getTMin());
+                    logger.info("wind direction: " + c.getPredWindDir()); 
+                    logger.info("weather type: " + c.getIdWeatherType());  
+                    logger.info("classified wind speed: " + c.getClassWindSpeed());  
+                    logger.info("longitude: " + c.getLongitude());   
+                    logger.info("latitude: " + c.getLatitude());
+                    logger.info("precipitation probability: " + c.getPrecipitaProb());
+                }
             } else {
                 logger.info("No results!");
             }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-
+        System.exit(1);
     }
 }
