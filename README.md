@@ -92,6 +92,21 @@ docker container logs --tail 100 web
 ```
 * faz print às últimas 100 linhas do ficheiro log do container
 
+#### Share
+```bash
+docker pull myimage:1.0
+```
+* faz Pull à imagem do registry
+
+```bash
+docker tag myimage:1.0 myrepo/myimage:2.0
+```
+* renomeia a imagem
+
+```bash
+docker push myrepo/myimage:2.0
+```
+* faz Push de uma imagem para o registry
 
 
 ## NOTES
