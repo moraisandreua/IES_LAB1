@@ -33,9 +33,36 @@ Assim, a sequência de execução é fixa e predefinida para uma dada phase.
 
 
 ## Lab 1.2
-
+* documentos gerados no diretório
 
 ## Lab 1.3
+### Docker Cheat Sheet
+#### Build
+$ docker build -t myimage:1.0 
+* constroi uma imagem a partir do Dockerfile presente no diretório atual
+
+$ docker image ls
+* lista todas as imagens que estão localmente guardadas com o Docker Engine
+
+$ docker image rm alpine:3.4
+* elimina uma image guardada localmente
+
+#### Run
+$ docker container run --name web -p 5000:80 alpine:3.9
+* corre um container a partir da versão 3.9 do Alpine
+* nomeira de "web" o container que está a correr
+* expõe a porta 80 do container como porta 5000 externamente
+
+$ docker container stop web
+* para a execução do container através de **SIGTERM**
+
+$ docker container kill web
+* para a execução do container através do **SIGKILL**
+
+$ docker network ls
+* lista todas as networks
+
+
 
 
 ## NOTES
@@ -111,3 +138,8 @@ For example, here's a simple configuration of the Maven Failsafe plugin which is
 </build>
 ```
 
+**SIGTERM**
+SIGTERM é um sinal conhecido por um processo informático em sistemas operativos POSIX. Este é o sinal padrão enviado pelos comandos kill e killall. Ele causa o término do processo, como em SIGKILL, porém pode ser interpretado ou ignorado pelo processo. Com isso, SIGTERM realiza um encerramento mais amigável, permitindo a liberação de memória e o fechamento dos arquivos.
+
+**SIGKILL**
+SIGKILL é um sinal conhecido por um processo informático em sistemas operativos POSIX. SIGKILL é uma constante numérica definida em signal.h, que pode variar em diversos sistemas. Este sinal causa uma terminação do processo, que não pode ser ignorada (ao contrario de SIGTERM).
