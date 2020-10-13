@@ -38,30 +38,59 @@ Assim, a sequência de execução é fixa e predefinida para uma dada phase.
 ## Lab 1.3
 ### Docker Cheat Sheet
 #### Build
-$ docker build -t myimage:1.0 
+```bash
+docker build -t myimage:1.0 
+```
 * constroi uma imagem a partir do Dockerfile presente no diretório atual
 
-$ docker image ls
+```bash
+docker image ls
+```
 * lista todas as imagens que estão localmente guardadas com o Docker Engine
 
-$ docker image rm alpine:3.4
+```bash
+docker image rm alpine:3.4
+```
 * elimina uma image guardada localmente
 
 #### Run
-$ docker container run --name web -p 5000:80 alpine:3.9
+```bash
+docker container run --name web -p 5000:80 alpine:3.9
+```
 * corre um container a partir da versão 3.9 do Alpine
 * nomeira de "web" o container que está a correr
 * expõe a porta 80 do container como porta 5000 externamente
 
-$ docker container stop web
+```bash
+docker container stop web
+```
 * para a execução do container através de **SIGTERM**
 
-$ docker container kill web
+```bash
+docker container kill web
+```
 * para a execução do container através do **SIGKILL**
 
-$ docker network ls
+```bash
+docker network ls
+```
 * lista todas as networks
 
+```bash
+docker container ls
+```
+* Lista os containers em execução
+* com o parametro --all, ele lista também o que não estão em execução
+
+```bash
+docker container rm -f $(docker ps -aq)
+```
+* elimina todos os containers, estejam em execução ou não
+
+```bash
+docker container logs --tail 100 web
+```
+* faz print às últimas 100 linhas do ficheiro log do container
 
 
 
